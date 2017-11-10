@@ -49,7 +49,7 @@ namespace UserMicroService.DataAccess
             return GetUserById(user.UserId);
         }
 
-        public static void updateNewUser(User updateUser)
+        public static void updateUser(User updateUser)
         {
             foreach (User user in listOfUsers)
             {
@@ -77,6 +77,17 @@ namespace UserMicroService.DataAccess
                 {
                     listOfUsers.Remove(user);
                 }
+            }
+        }
+
+        public static void deleteUser(User u)
+        {
+            foreach (User user in listOfUsers)
+            {
+               if (user.UserId == u.UserId)
+                {
+                    listOfUsers.Remove(user);
+                } 
             }
         }
 
