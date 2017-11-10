@@ -49,7 +49,7 @@ namespace UserMicroService.DataAccess
             return GetUserById(user.UserId);
         }
 
-        public static void updateUser(User updateUser)
+        public static void UpdateUser(User updateUser)
         {
             foreach (User user in listOfUsers)
             {

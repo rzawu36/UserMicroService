@@ -40,12 +40,7 @@ namespace UserMicroService.Tests
                 UserId = 1,
                 name = "Pera",
                 address = "Adresa",
-                email = "pera@email.com",
-                zipCode = "22000",
-                cityName = "Nov Sad",
-                countryName = "erbia",
-                phone = "12334512",
-                active = false
+                email = "pera@email.com"
             };
 
             User user2 = new User
@@ -53,12 +48,7 @@ namespace UserMicroService.Tests
                 UserId = 2,
                 name = "Pera2",
                 address = "Adresa2",
-                email = "pera@email.com2",
-                zipCode = "21000",
-                cityName = "Novi Sad",
-                countryName = "Serbia",
-                phone = "123345123",
-                active = true
+                email = "pera@email.com2"
             };
 
 
@@ -66,8 +56,9 @@ namespace UserMicroService.Tests
             UserDao.CreateNewUser(user);
             UserDao.CreateNewUser(user2);
 
-            UserDao.deleteUser(user);
+            UserDao.deleteUserById(1);
             Assert.AreEqual(1, UserDao.listOfUsers.Count);
+            
 
         }
 
@@ -101,7 +92,7 @@ namespace UserMicroService.Tests
             };
 
             UserDao.CreateNewUser(user);
-            UserDao.updateUser(updateUser);
+            UserDao.UpdateUser(updateUser);
 
             Assert.AreEqual("Pera2", UserDao.GetUserById(1).name);
             Assert.AreEqual("Adresa2", UserDao.GetUserById(1).address);
@@ -111,6 +102,8 @@ namespace UserMicroService.Tests
             Assert.AreEqual("Serbia", UserDao.GetUserById(1).countryName);
             Assert.AreEqual("123345123", UserDao.GetUserById(1).phone);
             Assert.AreEqual(true, UserDao.GetUserById(1).active);
+            //Assert.AreSame(updateUser, UserDao.GetUserById(1)); ovo poredi memorijske lokacije?
+
 
 
         }
