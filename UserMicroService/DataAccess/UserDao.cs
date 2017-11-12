@@ -76,6 +76,7 @@ namespace UserMicroService.DataAccess
                 if (user.UserId == id)
                 {
                     listOfUsers.Remove(user);
+                    break;
                 }
             }
         }
@@ -87,6 +88,7 @@ namespace UserMicroService.DataAccess
                if (user.UserId == u.UserId)
                 {
                     listOfUsers.Remove(user);
+                    break;
                 } 
             }
         }
