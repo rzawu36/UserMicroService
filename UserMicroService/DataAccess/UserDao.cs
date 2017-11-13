@@ -87,7 +87,7 @@ namespace UserMicroService.DataAccess
                 using (SqlConnection connection = new SqlConnection(DBFunctions.ConnectionString))
                 {
                     SqlCommand command = connection.CreateCommand();
-                    command.CommandText = String.Format(@"SELECT * FROM [user].[Users]");
+                    command.CommandText = String.Format(@"SELECT * FROM [user].[User]");
 
                     using (SqlDataReader reader = command.ExecuteReader()) {
                         if (reader.Read())
