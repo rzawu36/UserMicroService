@@ -17,5 +17,7 @@ namespace UserMicroService.Models
         public string phone { get; set; }
         public bool active { get; set; }
 
+        public int UserTypeId { get; set; }
+
     }
 }
