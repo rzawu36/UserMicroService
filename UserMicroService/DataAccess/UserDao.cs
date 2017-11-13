@@ -25,7 +25,7 @@ namespace UserMicroService.DataAccess
             return userToReturn;
         }
 
-        public static List<User> ReadAllFromDB(SqlDataReader reader)
+        public static List<User> ReadAllFromDB(SqlDataReader reader) //treba da vraca usera
         {
             List<User> usersToReturn = new List<User>();
             
@@ -92,7 +92,10 @@ namespace UserMicroService.DataAccess
                     using (SqlDataReader reader = command.ExecuteReader()) {
                         if (reader.Read())
                         {
-                            //listOfUsers = ReadAllFromDb(reader);
+                            while (reader.Read())
+                            {
+                               // listOfUsers.Add(ReadAllFromDB)
+                            }
                         }
 
                     }
@@ -106,6 +109,9 @@ namespace UserMicroService.DataAccess
                 return null;
             }
         }
+        //metoda za vracanja svih
+        //metoda za kreiranje korisnika
+        //updatovanje korisnika
 
     }
 }
