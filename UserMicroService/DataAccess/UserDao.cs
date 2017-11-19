@@ -25,11 +25,15 @@ namespace UserMicroService.DataAccess
             return userToReturn;
         }
 
-        public static List<User> ReadAllFromDB(SqlDataReader reader) //treba da vraca usera
+        public static User ReadAllFromDB(SqlDataReader reader) //treba da vraca usera
         {
-            List<User> usersToReturn = new List<User>();
-            
-            return null;
+            User userToReturn = new User();
+            userToReturn.UserId = (int)reader["Id"];
+            userToReturn.name = reader["Name"] as string;
+            userToReturn.email = reader["Email"] as string;
+            userToReturn.address = reader["Address"] as string;
+            userToReturn.UserTypeId = (int)reader["UserTypeId"];
+            return userToReturn;
         }
         
         public static User GetUserById(int id)
@@ -74,9 +78,33 @@ namespace UserMicroService.DataAccess
             return null;
         }
 
-        public static User createUser(User user)
+        public static void createUser(User user)
         {
-            return null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DBFunctions.ConnectionString))
+                {
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = String.Format(@"Insert into [user].[Users] ([name], [address], [phone]) values (@Name, @Address, @Phone);");
+                    command.Parameters.Add("@Id", SqlDbType.Int, user.UserId);
+
+                    command.Parameters.Add("@Name", SqlDbType.NVarChar);
+                    command.Parameters["@Name"].Value = user.name;
+
+                    command.Parameters.Add("@Address", SqlDbType.NVarChar);
+                    command.Parameters["@Address"].Value = user.address;
+
+                    command.Parameters.Add("@Phone", SqlDbType.NVarChar);
+                    command.Parameters["@Phone"].Value = user.phone;
+                    connection.Open();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+
+            }
+            
         }
 
         public static List<User> getAllUsers()
@@ -94,14 +122,14 @@ namespace UserMicroService.DataAccess
                         {
                             while (reader.Read())
                             {
-                               // listOfUsers.Add(ReadAllFromDB)
+                                User user = ReadAllFromDB(reader);
+                                listOfUsers.Add(user);
                             }
                         }
 
                     }
                 }
                 return listOfUsers;
-
                 }
             catch (Exception e )
             {
@@ -109,7 +137,91 @@ namespace UserMicroService.DataAccess
                 return null;
             }
         }
-        //metoda za vracanja svih
+
+        public static void deleteUserById(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DBFunctions.ConnectionString))
+                {
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = String.Format(@"
+                    DELETE
+                    from
+                    [user].[User]
+                    where
+                    [Id] = @Id
+                        ");
+                    command.Parameters.Add("@Id", SqlDbType.Int, id);
+                    connection.Open();
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }  
+        
+        public static void updateUser(User user)
+        {
+            int userId = user.UserId;
+            string nameToUpdate = user.name;
+            string emailToUpdate = user.email;
+            string addressToUpdate = user.address;
+            string zipCodeToUpdate = user.zipCode;
+            string cityNameToUpdate = user.cityName;
+            string countryNameToUpdate = user.countryName;
+            string phoneToUpdate = user.phone;
+            bool  activeToUpdate = user.active;
+            int userTypeIdToUpdate = user.UserTypeId;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DBFunctions.ConnectionString))
+                {
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = String.Format(@"UPDATE [user].[User] set
+                    [name] = @Name,
+                    [email] = @Email,
+                    [address] = @Address,
+                    [zipcode] = @ZipCode,
+                    [cityname] = @CityName,
+                    [countryname] = @CountryName,
+                    [phone] = @Phone
+                    where [Id] = @Id
+                    ");
+                    command.Parameters.Add("@Id", SqlDbType.Int, userId);
+
+                    command.Parameters.Add("@Name", SqlDbType.NVarChar);
+                    command.Parameters["@Name"].Value = nameToUpdate;
+
+                    command.Parameters.Add("Email", SqlDbType.NVarChar);
+                    command.Parameters["@Email"].Value = emailToUpdate;
+
+                    command.Parameters.Add("@Address", SqlDbType.NVarChar);
+                    command.Parameters["@Address"].Value = addressToUpdate;
+
+                    command.Parameters.Add("@ZipCode", SqlDbType.NVarChar);
+                    command.Parameters["@ZipCode"].Value = zipCodeToUpdate;
+
+                    command.Parameters.Add("@CityName", SqlDbType.NVarChar);
+                    command.Parameters["@CityName"].Value = cityNameToUpdate;
+
+                    command.Parameters.Add("@CountryName", SqlDbType.NVarChar);
+                    command.Parameters["@CountryName"].Value = countryNameToUpdate;
+
+                    command.Parameters.Add("@Phone", SqlDbType.NVarChar);
+                    command.Parameters["@Phone"].Value = phoneToUpdate;
+
+                    connection.Open();
+                }
+            }
+            catch(Exception e)
+            {
+                Console.Write(e);
+            }
+        }
+        
         //metoda za kreiranje korisnika
         //updatovanje korisnika
 
